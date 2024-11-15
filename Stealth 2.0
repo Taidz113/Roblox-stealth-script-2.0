@@ -1,0 +1,69 @@
+-- Invisibility Script for Roblox
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Function to make the character invisible
+local function makeInvisible()
+    -- Check if the character exists
+    if character then
+        -- Loop through all parts of the character
+        for _, part in pairs(character:GetChildren()) do
+            -- Ensure the part is a BasePart
+            if part:IsA("BasePart") then
+                part.Transparency = 1 -- Set transparency to 100%
+            end
+        end
+        
+        -- Make hair and other accessories invisible
+        for _, accessory in pairs(character:GetChildren()) do
+            if accessory:IsA("Accessory") then
+                accessory.Handle.Transparency = 1 -- Set accessory transparency to 100%
+            end
+        end
+        
+        -- Set character expressions to invisible
+        if character:FindFirstChild("Head") then
+            local head = character.Head
+            head.face.Transparency = 1 -- Make face invisible
+        end
+    else
+        warn("Character not found.")
+    end
+end
+
+-- Function to reset invisibility
+local function resetInvisibility()
+    -- Check if the character exists
+    if character then
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0 -- Reset transparency to 0%
+            end
+        end
+        
+        for _, accessory in pairs(character:GetChildren()) do
+            if accessory:IsA("Accessory") then
+                accessory.Handle.Transparency = 0 -- Reset accessory transparency to 0%
+            end
+        end
+        
+        if character:FindFirstChild("Head") then
+            local head = character.Head
+            head.face.Transparency = 0 -- Reset face transparency to 0%
+        end
+    else
+        warn("Character not found.")
+    end
+end
+
+-- Main loop to maintain invisibility
+while true do
+    pcall(function()
+        makeInvisible()
+        wait(0.1) -- Adjust the wait time as necessary
+    end)
+    
+    -- Check for player reset or death
+    player.CharacterAdded:Wait()
+    resetInvisibility()
+end
